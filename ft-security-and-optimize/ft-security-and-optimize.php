@@ -1,13 +1,13 @@
 <?php
 /**
- * Plugin Name: FotoTechnik - Security und Optimierung.
+ * Plugin Name: FotoTechnik - Security und Optimierung
  * Plugin URI:  https://github.com/Raychan87/ft-security-and-optimize
  * Description: Verwaltung von Security‑, Optimierungs‑ und REST‑API‑Einstellungen unter einem eigenen Admin‑Menü.
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Raychan
  * Author URI:  https://Fototour-und-technik.de
  * License:     GPLv3
- * License URI: https://github.com/Raychan87/ft-meow-lightbox-mapping/blob/main/LICENSE
+ * License URI: https://github.com/Raychan87/ft-security-and-optimize/blob/main/LICENSE
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -42,13 +42,21 @@ function ftsao_add_admin_menu() {
     // Wenn nicht vorhanden → Hauptmenü anlegen
     // Top‑Level‑Eintrag „FotoTechnik“
     if ( ! $menu_exists ) {
+
+        // ----  Pfad / URL zum eigenen Icon  ----
+        $icon_url = plugin_dir_url( __FILE__ ) . 'inc/ft-icon.png';
+        if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'inc/ft-icon.png' ) ) {
+            // Fallback zu Dashicon, falls die PNG fehlt
+            $icon_url = 'dashicons-camera';
+        }
+
         add_menu_page(
             __( 'FotoTechnik', 'ft-security-optimize' ), // Page title (wird im Browser‑Tab angezeigt)
             __( 'FotoTechnik', 'ft-security-optimize' ), // Menu title (sichtbar im Admin‑Menu)
             'manage_options',                             // Capability – wer das Menü sehen darf
             FT_MENU_SLUG,                                 // Slug des Top‑Level‑Eintrags
             '__return_null',                              // Callback – wird aufgerufen, wenn das Hauptmenü angeklickt wird
-            'dashicons-camera',                           // Icon (optional)
+            $icon_url,                                    // **eigenes PNG‑Icon**
             81                                            // Position im Menü
         );
 
@@ -80,6 +88,24 @@ function ftsao_add_admin_menu() {
         'manage_options',
         'fototechnik-optimierung',
         'fototechnik_page_optimierung'
+    );
+}
+
+/* -------------------------------------------------
+ * CSS‑Feinjustierung für das Icon
+ * ------------------------------------------------- */
+add_action( 'admin_enqueue_scripts', 'ftsao_admin_menu_icon_css' );
+function ftsao_admin_menu_icon_css() {
+    // Nur im Admin‑Dashboard ausgeben
+    wp_add_inline_style(
+        'wp-admin',
+        '
+        #toplevel_page_' . FT_MENU_SLUG . ' .wp-menu-image img {
+            width: 20px;
+            height: 20px;
+            padding-top: 6px;
+        }
+        '
     );
 }
 
