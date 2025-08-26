@@ -371,7 +371,6 @@ function ftsao_deactivate() {
     // Entfernt die übrigen Sub‑Menus
     remove_submenu_page( FT_MENU_SLUG, 'fototechnik-security' );
     remove_submenu_page( FT_MENU_SLUG, 'fototechnik-optimierung' );
-    remove_submenu_page( FT_MENU_SLUG, 'fototechnik-restapi' );
 
     // Wenn danach keine Sub‑Menus mehr übrig sind, entferne das Top‑Level‑Menü
     global $submenu;
@@ -379,3 +378,4 @@ function ftsao_deactivate() {
         remove_menu_page( FT_MENU_SLUG );
     }
 }
+
